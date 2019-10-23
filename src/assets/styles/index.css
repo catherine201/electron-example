@@ -1,0 +1,108 @@
+@import './animate.css';
+/* reset */
+body,
+html,
+ol,
+ul,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+th,
+td,
+dl,
+dd,
+dt,
+form,
+fieldset,
+legend,
+input,
+textarea,
+select,
+img {
+  margin: 0;
+  padding: 0;
+}
+body,
+html {
+  font: 12px '微软雅黑';
+  color: #333;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+b,
+strong {
+  font-weight: 100;
+}
+i,
+em {
+  font-style: normal;
+}
+li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  color: #333;
+}
+img {
+  border: 0;
+}
+input {
+  outline: none;
+}
+.clearfix:after {
+  content: '.';
+  display: block;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  clear: both;
+}
+.c-666464 {
+  color: #666464;
+}
+.underline:hover {
+  text-decoration: underline;
+}
+body {
+  margin: 0;
+  padding: 0;
+  color: #464c5b;
+  font-size: 14px;
+  line-height: 1.4;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  background: #ecf0f5;
+  box-sizing: border-box;
+}
+.middle-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(236, 240, 245);
+}
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+.btn-block.btn-lg {
+  min-width: 200px;
+  height: 42px;
+  line-height: 42px;
+}
+.text-center {
+  text-align: center;
+}

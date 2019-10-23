@@ -1,0 +1,21 @@
+version: '3'
+#
+# 生成环境docker-compose配置文件
+#run:
+# docker-compose build
+# docker-compose up -d
+#
+services:
+  node:
+    build: ../dockers/node/
+    volumes:
+      - .:/usr/src/app
+  nginx:
+    image: nginx
+    volumes:
+      - ../build/:/usr/share/nginx/html/
+      - ../nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - node
+    ports:
+      - 3030:80
