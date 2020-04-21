@@ -4,12 +4,13 @@ const { autoUpdater } = require('electron-updater')
 const path = require('path')
 // const url = require('url')
 const uploadUrl = 'https://yrbing.com.cn/'
+const url = require('url')
 
 // 保持window对象的全局引用,避免JavaScript对象被垃圾回收时,窗口被自动关闭.
 let mainWindow
 
 // 检测更新
-function updateHandle () {
+function updateHandle() {
   const message = {
     error: '检查更新出错',
     checking: '正在检查更新……',
@@ -68,11 +69,11 @@ function updateHandle () {
 }
 
 // 通过main进程发送事件给renderer进程，提示更新信息
-function sendUpdateMessage (text) {
+function sendUpdateMessage(text) {
   mainWindow.webContents.send('message', text)
 }
 
-function createWindow () {
+function createWindow() {
   // 创建浏览器窗口,宽高自定义具体大小
   const { screen } = require('electron')
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
@@ -87,7 +88,7 @@ function createWindow () {
       webSecurity: false,
       nodeIntegration: true, // 是否完整的支持 node. 默认值为true
       nodeIntegrationInWorker: true, // 是否在Web工作器中启用了Node集成
-      preload: path.join(__dirname, './public/renderer.js')
+      preload: path.join(__dirname, './renderer.js')
       // preload: './preload.js' // 在页面运行其他脚本之前预先加载指定的脚本 无论页面是否集成Node, 此脚本都可以访问所有Node API 脚本路径为文件的绝对路径
     }
   })
@@ -97,21 +98,21 @@ function createWindow () {
     // { role: 'appMenu' }
     ...(isMac
       ? [
-        {
-          label: app.name,
-          submenu: [
-            { role: 'about' },
-            { type: 'separator' },
-            { role: 'services' },
-            { type: 'separator' },
-            { role: 'hide' },
-            { role: 'hideothers' },
-            { role: 'unhide' },
-            { type: 'separator' },
-            { role: 'quit' }
-          ]
-        }
-      ]
+          {
+            label: app.name,
+            submenu: [
+              { role: 'about' },
+              { type: 'separator' },
+              { role: 'services' },
+              { type: 'separator' },
+              { role: 'hide' },
+              { role: 'hideothers' },
+              { role: 'unhide' },
+              { type: 'separator' },
+              { role: 'quit' }
+            ]
+          }
+        ]
       : []),
     // { role: 'fileMenu' }
     {
@@ -130,15 +131,15 @@ function createWindow () {
         { role: 'paste' },
         ...(isMac
           ? [
-            { role: 'pasteAndMatchStyle' },
-            { role: 'delete' },
-            { role: 'selectAll' },
-            { type: 'separator' },
-            {
-              label: 'Speech',
-              submenu: [{ role: 'startspeaking' }, { role: 'stopspeaking' }]
-            }
-          ]
+              { role: 'pasteAndMatchStyle' },
+              { role: 'delete' },
+              { role: 'selectAll' },
+              { type: 'separator' },
+              {
+                label: 'Speech',
+                submenu: [{ role: 'startspeaking' }, { role: 'stopspeaking' }]
+              }
+            ]
           : [{ role: 'delete' }, { type: 'separator' }, { role: 'selectAll' }])
       ]
     },
@@ -198,8 +199,17 @@ function createWindow () {
     })
   }
   // 加载应用----线上
-  mainWindow.loadURL('https://yrbing.com.cn/')
+  // mainWindow.loadURL('https://yrbing.com.cn/')
+  // 加载应用----
+  mainWindow.loadURL(
+    url.format({
+      pathname: path.join(__dirname, './index.html'),
+      protocol: 'file:',
+      slashes: true
+    })
+  )
 
+  // mainWindow.webContents.openDevTools()
   // 关闭window时触发下列事件.
   mainWindow.on('closed', () => {
     mainWindow = null
