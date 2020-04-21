@@ -1,5 +1,13 @@
 /// <reference types="react-scripts" />
 
+// declare var window: Window & { electron: any; remote: any; shell: any }
+declare global {
+  interface Window {
+    electron: any
+    remote: any
+    shell: any
+  }
+}
 declare module '*.module.less' {
   const classes: { [key: string]: string }
   export default classes

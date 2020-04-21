@@ -1,22 +1,13 @@
-/* eslint-disable no-unused-vars */
-
 // 引入electron并创建一个Browserwindow
 const { app, BrowserWindow, Menu, ipcMain } = require('electron')
 const { autoUpdater } = require('electron-updater')
 const path = require('path')
-const url = require('url')
-// const os = require('os');
-const localShortcut = require('electron-localshortcut')
-
+// const url = require('url')
 const uploadUrl = 'https://yrbing.com.cn/'
 
 // 保持window对象的全局引用,避免JavaScript对象被垃圾回收时,窗口被自动关闭.
 let mainWindow
 
-// 通过main进程发送事件给renderer进程，提示更新信息
-function sendUpdateMessage (text) {
-  mainWindow.webContents.send('message', text)
-}
 // 检测更新
 function updateHandle () {
   const message = {
@@ -25,35 +16,38 @@ function updateHandle () {
     updateAva: '检测到新版本，正在下载……',
     updateNotAva: '现在使用的就是最新版本，不用更新'
   }
+  const os = require('os')
 
   autoUpdater.setFeedURL(uploadUrl)
   autoUpdater.on('error', () => {
     sendUpdateMessage(message.error)
+    // sendUpdateMessage(error);
   })
   autoUpdater.on('checking-for-update', () => {
     sendUpdateMessage(message.checking)
   })
-  autoUpdater.on('update-available', () => {
-    sendUpdateMessage(message.updateAva)
+  autoUpdater.on('update-available', info => {
+    console.log(info)
+    mainWindow.webContents.send(
+      'updateAvailable',
+      '<h3>检测到新版本' + info.version + '，需要升级？</h3>' + info.releaseNotes
+    )
+    // sendUpdateMessage(message.updateAva);
   })
   autoUpdater.on('update-not-available', info => {
-    console.log(info)
     sendUpdateMessage(message.updateNotAva)
   })
 
   // 更新下载进度事件
   autoUpdater.on('download-progress', progressObj => {
-    mainWindow.webContents.send('downloadProgress', progressObj)
+    console.log(progressObj)
+    const winId = BrowserWindow.getFocusedWindow().id
+    const win = BrowserWindow.fromId(winId)
+    win.webContents.send('downloadProgress', progressObj)
   })
-  autoUpdater.on('update-downloaded', function (
-    event,
-    releaseNotes,
-    releaseName,
-    releaseDate,
-    updateUrl,
-    quitAndUpdate
-  ) {
-    ipcMain.on('isUpdateNow', () => {
+  autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName, releaseDate, updateUrl, quitAndUpdate) => {
+    console.log(event, releaseNotes, releaseName, releaseDate, updateUrl, quitAndUpdate)
+    ipcMain.on('isUpdateNow', (e, arg) => {
       console.log(arguments)
       console.log('开始更新')
       // some code here to handle event
@@ -63,10 +57,19 @@ function updateHandle () {
     mainWindow.webContents.send('isUpdateNow')
   })
 
+  ipcMain.on('isDownload', () => {
+    autoUpdater.downloadUpdate()
+  })
+
   ipcMain.on('checkForUpdate', () => {
     // 执行自动更新检查
     autoUpdater.checkForUpdates()
   })
+}
+
+// 通过main进程发送事件给renderer进程，提示更新信息
+function sendUpdateMessage (text) {
+  mainWindow.webContents.send('message', text)
 }
 
 function createWindow () {
@@ -88,7 +91,7 @@ function createWindow () {
       // preload: './preload.js' // 在页面运行其他脚本之前预先加载指定的脚本 无论页面是否集成Node, 此脚本都可以访问所有Node API 脚本路径为文件的绝对路径
     }
   })
-  // 程序自定义菜单
+  // 程序菜单自定义
   const isMac = process.platform === 'darwin'
   const template = [
     // { role: 'appMenu' }
@@ -178,9 +181,11 @@ function createWindow () {
       ]
     }
   ]
+
   if (process.platform === 'darwin') {
     Menu.setApplicationMenu(Menu.buildFromTemplate(template))
     const contents = mainWindow.webContents
+    const localShortcut = require('electron-localshortcut')
     // 复制黏贴快捷键
     localShortcut.register(mainWindow, 'CommandOrControl+A', () => {
       contents.selectAll()
@@ -192,23 +197,13 @@ function createWindow () {
       contents.paste()
     })
   }
-
-  global.mainId = 'testMainId'
-
-  // 加载应用----
-  mainWindow.loadURL(
-    url.format({
-      pathname: path.join(__dirname, './build/index.html'),
-      protocol: 'file:',
-      slashes: true
-    })
-  )
+  // 加载应用----线上
+  mainWindow.loadURL('https://yrbing.com.cn/')
 
   // 关闭window时触发下列事件.
   mainWindow.on('closed', () => {
     mainWindow = null
   })
-
   ipcMain.on('openDev', () => {
     mainWindow.webContents.openDevTools()
   })

@@ -5,14 +5,20 @@ import { notification } from 'antd'
 import routeConfig from '@/routes/index.js'
 import { Provider } from 'react-redux'
 import store from '@/store/index.js'
-const ipcRenderer = (window as any).electron && (window as any).electron.ipcRenderer
+import { isElectron } from '@/utils/index.js'
+
+declare global {
+  interface Window {
+    electron: any
+  }
+}
+const ipcRenderer = window.electron && window.electron.ipcRenderer
 
 console.dir(<GenerateRoute config={routeConfig} />)
 
 export class App extends React.Component {
   public componentDidMount() {
-    const self = this
-    if (ipcRenderer) {
+    if (isElectron() && ipcRenderer) {
       ipcRenderer.send('checkForUpdate')
       ipcRenderer.on('message', (event: any, message: any) => {
         console.log(event, message)
@@ -41,12 +47,7 @@ export class App extends React.Component {
   }
   public componentWillUnmount() {
     if (ipcRenderer) {
-      ipcRenderer.removeAll([
-        'message',
-        'downloadProgress',
-        'isUpdateNow',
-        'updateAvailable'
-      ])
+      ipcRenderer.removeAll(['message', 'downloadProgress', 'isUpdateNow', 'updateAvailable'])
     }
   }
   public render() {

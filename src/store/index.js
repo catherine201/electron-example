@@ -2,7 +2,7 @@ import { init } from '@rematch/core'
 import { reducer as reduxAsyncConnect } from 'redux-connect'
 import models from './modules'
 
-function createStore() {
+function createStore () {
   const store = init({
     models,
     redux: {

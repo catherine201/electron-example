@@ -2,6 +2,8 @@
   "name": "antd-demo-ts",
   "version": "0.1.0",
   "private": true,
+  "main": "main.js",
+  "homepage": ".",
   "dependencies": {
     "@rematch/core": "^1.1.0",
     "@types/jest": "24.0.11",
@@ -42,15 +44,15 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "dist": "electron-builder",
-    "electron-start": "electron .",
+    "dist": "npm run build && electron-builder",
+    "electron-start": "npm run build && electron .",
     "build": "react-app-rewired build",
     "deploy": "npm run build && node ./deploy",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "build": {
-    "appId": "***.app",
+    "appId": "2WM235H4C7.com.das.app",
     "copyright": "back-manage",
     "productName": "back-manage",
     "nsis": {
@@ -66,7 +68,7 @@
     "publish": [
       {
         "provider": "generic",
-        "url": "https://***"
+        "url": "https://yrbing.com.cn/"
       }
     ],
     "dmg": {

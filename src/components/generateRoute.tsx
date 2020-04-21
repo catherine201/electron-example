@@ -5,7 +5,6 @@ import NotMatch from '@/views/notMatch/index.tsx'
 export const RouteWithSubRoutes = (route: any) => {
   const isLogin = sessionStorage.getItem('isLogin') && JSON.parse(sessionStorage.getItem('isLogin') || 'false')
   const needAuth = route.auth === false ? false : true
-  console.log(isLogin, needAuth)
   return needAuth && !isLogin ? (
     <Redirect to={'/login'} />
   ) : (

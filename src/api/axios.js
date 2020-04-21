@@ -28,7 +28,7 @@ axios.interceptors.request.use(
     }
     const token = getToken()
     if (token) {
-      config.headers['Authorization'] = token
+      config.headers.Authorization = token
     }
     return config
   },
@@ -99,9 +99,11 @@ axios.interceptors.response.use(
 function createDom() {
   const containerDOM = document.createElement('div')
   containerDOM.setAttribute('id', 'loadingContainer')
-  containerDOM.style.cssText = `width: 100%;height: 100%;position: fixed;display: block;background: #e0e0e0;bottom: 0;text-align: center;opacity: 0.5;z-index: 5000`
+  containerDOM.style.cssText =
+    'width: 100%;height: 100%;position: fixed;display: block;background: #e0e0e0;bottom: 0;text-align: center;opacity: 0.5;z-index: 5000'
   const ImgDOM = document.createElement('img')
-  ImgDOM.style.cssText = `display: inline-block;width: 2rem; height: 2rem;position: absolute;top: 50%; left: 50%; margin-top: -1rem; margin-left: -1rem;`
+  ImgDOM.style.cssText =
+    'display: inline-block;width: 2rem; height: 2rem;position: absolute;top: 50%; left: 50%; margin-top: -1rem; margin-left: -1rem;'
   ImgDOM.setAttribute('src', loadingImg)
   containerDOM.appendChild(ImgDOM)
   document.body.appendChild(containerDOM)

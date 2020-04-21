@@ -10,7 +10,7 @@ const page = name =>
   })
 
 const Layout = Loadable({
-  loader: () => import(`@/components/layout.tsx`),
+  loader: () => import('@/components/layout.tsx'),
   loading: Loading
 })
 const routeConfig = [
@@ -30,7 +30,7 @@ const routeConfig = [
             exact: true
           },
           {
-            path: '/admin/news/star/:id',
+            path: '/admin/news/star/:id?',
             component: page('News/star.tsx'),
             exact: true
           }

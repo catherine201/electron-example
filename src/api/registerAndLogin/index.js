@@ -19,47 +19,6 @@ const config = {
       // contentType: 'json'
       // showLoading: false
     }
-  },
-  // 获取支持的币种
-  queryListCoins: {
-    url: '/configure/support/coins',
-    method: 'get',
-    options: {
-      errorHandler: true
-    }
-  },
-  // 获取支持的银行
-  queryBankType: {
-    url: '/configure/support/banks',
-    method: 'get',
-    options: {
-      errorHandler: true,
-      showLoading: false
-    }
-  },
-  // 提现地址
-  queryCoinOutAddr: {
-    url: '/admin/bankcards',
-    method: 'get',
-    options: {
-      errorHandler: true
-    }
-  },
-  // 充币记录 提币记录
-  queryCointxs: {
-    url: '/admin/cointxs',
-    method: 'get',
-    options: {
-      errorHandler: true
-    }
-  },
-  // 充币地址
-  queryCoinInAddr: {
-    url: '/admin/recharge/addresses',
-    method: 'get',
-    options: {
-      errorHandler: true
-    }
   }
 }
 

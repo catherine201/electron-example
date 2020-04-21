@@ -1,4 +1,4 @@
-export function getParams(key) {
+export function getParams (key) {
   if (window.location.href.indexOf('?') !== -1) {
     const str = window.location.href.split('?')[1]
     if (str.indexOf('&') !== -1) {
@@ -17,4 +17,9 @@ export function getParams(key) {
       return arr[1]
     }
   }
+}
+
+export function isElectron () {
+  const userAgent = navigator.userAgent.toLowerCase()
+  return userAgent.indexOf(' electron/') > -1
 }

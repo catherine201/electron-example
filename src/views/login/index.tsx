@@ -1,25 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Button, Form, Input, Icon, Checkbox } from 'antd'
 import { withRouter } from 'react-router-dom'
 import { regular } from '@/utils/validate.js'
 import { connect } from 'react-redux'
 import styles from './index.module.less'
 import imgSrc from '@/assets/images/logo.jpg'
+import { isElectron } from '@/utils/index.js'
+
+declare global {
+  interface Window {
+    electron: any
+  }
+}
+
+const ipcRenderer = window.electron && window.electron.ipcRenderer
 
 const Login = (props: any) => {
-  useEffect(() => {
-    console.log('componentDidMount: 组件加载后')
-    // loading.start()
-    //init()
-    return () => {
-      console.log('componentWillUnmount: 组件卸载， 做一些清理工作')
-    }
-  }, [])
-
-  useEffect(() => {
-    console.log('componentDidUpdate： 更新usernmae')
-  }, [])
-
   const validateToPassword = (rule: any, value: any, callback: any) => {
     if (value && !regular.passWord.test(value)) {
       callback('密码至少为8位的字母,数字,字符任意两种的组合!')
@@ -30,9 +26,15 @@ const Login = (props: any) => {
 
   const handleLogin = () => {
     sessionStorage.setItem('isLogin', JSON.stringify(true))
-    console.log(props)
-    props.history.push('/admin')
+    props.history.push('/admin/news/history')
   }
+
+  // 开启调试控制台
+  const openDevTool = () => {
+    if (!isElectron()) return
+    ipcRenderer.send('openDev')
+  }
+
   const { getFieldDecorator } = props.form
   return (
     <div className={styles.login_wrap}>
@@ -74,7 +76,7 @@ const Login = (props: any) => {
           </Button>
         </Form.Item>
       </Form>
-      <h1 className="text-center" style={{ color: '#1890FF', fontSize: '12px' }}>
+      <h1 className="text-center" style={{ color: '#1890FF', fontSize: '12px' }} onClick={openDevTool}>
         Catherine Platform
       </h1>
     </div>
@@ -88,9 +90,4 @@ const mapStateToProps = (state: any) => ({
 const mapDispatchToProps = (dispatch: any) => ({
   getTest: dispatch.demo.getTest
 })
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Form.create()(Login))
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Form.create()(Login)))
