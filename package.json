@@ -13,7 +13,7 @@
     "@types/react-redux": "^7.0.8",
     "@types/react-router": "^5.0.0",
     "antd": "^3.16.2",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel-plugin-import": "^1.11.0",
     "compression-webpack-plugin": "^2.0.0",
     "customize-cra": "^0.2.12",
