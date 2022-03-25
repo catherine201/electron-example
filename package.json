@@ -109,7 +109,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "electron": "^4.2.9",
+    "electron": "^13.6.6",
     "electron-builder": "^21.2.0",
     "http-proxy-middleware": "^0.19.1",
     "less-loader": "^4.1.0"
